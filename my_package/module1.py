@@ -528,3 +528,328 @@ plt.grid(True)
 plt.show()
 """
     return code
+
+def knn():
+    """
+    Returns KNN classification code for Iris dataset as provided.
+    Usage:
+    code = knn_iris()
+    print(code)  # To view the code
+    exec(code)   # To execute the code
+    """
+    code = """
+import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score,recall_score,f1_score,precision_score,confusion_matrix
+import warnings
+warnings.filterwarnings('ignore')
+
+# Load dataset
+iris_df = pd.read_csv('/content/iris.csv')
+
+# Prepare data
+X = iris_df.drop('variety', axis=1)
+Y = iris_df['variety']
+
+# Train-test split
+X_Train,X_Test,Y_Train,Y_Test = train_test_split(X,Y,test_size=0.3,random_state=42)
+
+# KNN model
+k = KNeighborsClassifier(n_neighbors=50)
+k.fit(X_Train, Y_Train)
+
+# Predictions
+Y_Pred = k.predict(X_Test)
+
+# Evaluation metrics
+print(f"Accuracy: {accuracy_score(Y_Test,Y_Pred)}")
+print(f"Precision: {precision_score(Y_Test,Y_Pred,average='weighted')}")
+print(f"F1 Score: {f1_score(Y_Test,Y_Pred,average='weighted')}")
+print(f"Recall Score: {recall_score(Y_Test,Y_Pred,average='weighted')}")
+
+# Confusion matrix
+cm = confusion_matrix(Y_Test,Y_Pred)
+print("\\nConfusion Matrix:")
+print(cm)
+"""
+    return code
+
+
+def svm():
+    """
+    Returns SVM classification code for Social Network Ads dataset as provided.
+    Usage:
+    code = svm_classifier()
+    print(code)  # To view the code
+    exec(code)   # To execute the code
+    """
+    code = """
+import pandas as pd
+import matplotlib.pyplot as plt
+import warnings
+from sklearn.model_selection import train_test_split
+from sklearn.svm import SVC
+from sklearn import metrics
+warnings.filterwarnings('ignore')
+
+# Load dataset
+sn_df = pd.read_csv("/content/Social_Network_Ads.csv")
+
+# Dataset info
+sn_df.info()
+sn_df.describe()
+
+# Prepare data
+X = sn_df[['Age','EstimatedSalary']]
+y = sn_df['Purchased']
+
+# Train-test split
+x_train,x_test,y_train,y_test = train_test_split(X,y,test_size=0.25,random_state=42)
+
+# SVM model
+svm_model = SVC(kernel="rbf")
+svm_model.fit(x_train,y_train)
+
+# Predictions
+y_pred = svm_model.predict(x_test)
+print("Predictions:", y_pred)
+
+# Accuracy score
+print("\\nAccuracy Score:", metrics.accuracy_score(y_test,y_pred))
+"""
+    return code
+
+def preprocessing():
+    """
+    Returns data preprocessing and visualization code as provided.
+    Usage:
+    code = preprocessing()
+    print(code)  # To view the code
+    exec(code)   # To execute the code
+    """
+    code = """
+import pandas as pd
+import numpy as np
+from google.colab import files
+import warnings
+import seaborn as sns
+warnings.filterwarnings("ignore")
+
+# File upload
+upload = files.upload()
+
+# Load weather data
+df = pd.read_csv("/content/Weather.csv")
+print("\\nOriginal Weather Data:")
+print(df)
+
+# Basic NaN filling
+print("\\nFill all NaN with 0:")
+print(df.fillna(0))
+
+# Column-specific NaN filling
+newd = df.fillna({
+    'temperature':0,
+    'windspeed':0,
+    'event':'No event'
+})
+print("\\nColumn-specific NaN filling:")
+print(newd)
+
+# Forward fill
+newdf = df.fillna(method="ffill")
+print("\\nForward fill:")
+print(newdf)
+
+# Backward fill
+newdf2 = df.fillna(method="bfill")
+print("\\nBackward fill:")
+print(newdf2)
+
+# Interpolation
+newdf3 = df.interpolate()
+print("\\nInterpolated values:")
+print(newdf3)
+
+# Drop NaN
+newdf4 = df.dropna()
+print("\\nDropped NaN rows:")
+print(newdf4)
+
+# Outlier detection
+print("\\n=== Outlier Detection ===")
+data=[11,10,12,14,13,22,15,10,13,120,15,10,14,20,12,10,11,111,20,21,13,10,11,25,11,16,13,109,17,12,15,11,14,10]
+data = np.array(data)
+mean = np.mean(data)
+std = np.std(data)
+threshold=3
+outlier=[]
+print("Mean of the dataset is: ",mean)
+print("Standard deviation of the dataset is: ",std)
+
+for i in data:
+  z = (i - mean)/std
+  if z > threshold:
+    outlier.append(i)
+print("Outliers are: ",outlier)
+
+# Titanic dataset analysis
+print("\\n=== Titanic Dataset Analysis ===")
+url="https://raw.githubusercontent.com/datasciencedojo/datasets/master/titanic.csv"
+titanic = pd.read_csv(url)
+print("\\nTitanic Data Head:")
+print(titanic.head())
+print("\\nTitanic Data Info:")
+print(titanic.info())
+
+# Visualizations
+print("\\n=== Visualizations ===")
+sns.heatmap([titanic.Age,titanic.Survived])
+plt.title("Age vs Survived Heatmap")
+plt.show()
+
+sns.heatmap(titanic.isnull(),yticklabels=False)
+plt.title("Missing Values Heatmap")
+plt.show()
+
+sns.countplot(data=titanic,x="Survived",hue="Pclass",legend='auto')
+plt.title("Survival Count by Passenger Class")
+plt.show()
+
+sns.distplot(titanic['Age'],kde=False)
+plt.title("Age Distribution")
+plt.show()
+
+titanic['Fare'].hist(bins=5, figsize=(6,4), color='brown', grid=False, density=True)
+plt.title("Fare Distribution")
+plt.show()
+"""
+    return code
+
+def kmeans():
+    """
+    Returns K-Means clustering code as provided.
+    Usage:
+    code = kmeans()
+    print(code)  # To view the code
+    exec(code)   # To execute the code
+    """
+    code = """
+# Import the needed Libraries
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.cluster import KMeans
+
+# Load the dataset
+df = pd.read_csv("/content/income.csv")
+print("\\nDataset Head:")
+print(df.head())
+
+# Scatter plot to visualize data
+plt.figure(figsize=(8, 6))
+plt.scatter(df.Age, df.Income)
+plt.title("Initial Data Distribution")
+plt.xlabel("Age")
+plt.ylabel("Income")
+plt.show()
+
+# Create and train the model
+km = KMeans(n_clusters=3)
+y_predict = km.fit_predict(df[['Age', 'Income']])
+
+# Assign the predicted cluster to the dataframe
+df['cluster'] = y_predict
+print("\\nData with Cluster Assignments:")
+print(df.head())
+
+# Separate data by clusters
+df1 = df[df.cluster == 0]
+df2 = df[df.cluster == 1]
+df3 = df[df.cluster == 2]
+
+print("\\nCluster 0 Data:")
+print(df1)
+print("\\nCluster 1 Data:")
+print(df2)
+print("\\nCluster 2 Data:")
+print(df3)
+
+# Visualize the clusters
+plt.figure(figsize=(8, 6))
+plt.scatter(df1.Age, df1.Income, color='red', label='Cluster 0')
+plt.scatter(df2.Age, df2.Income, color='green', label='Cluster 1')
+plt.scatter(df3.Age, df3.Income, color='blue', label='Cluster 2')
+plt.scatter(km.cluster_centers_[:,0], km.cluster_centers_[:,1], color='purple', marker='*', label='Centroids', s=100)
+plt.title("K-Means Clustering (k=3)")
+plt.xlabel("Age")
+plt.ylabel("Income")
+plt.legend()
+plt.show()
+"""
+    return code
+
+
+def bagging():
+    """
+    Returns Bagging Classifier implementation code as a string.
+    Demonstrates bagging with both SVM and Decision Tree base estimators.
+    Usage:
+    code = bagging()
+    print(code)  # To view the code
+    exec(code)   # To execute the code
+    """
+    code = """
+# Bagging Classifier Implementation
+from sklearn.ensemble import BaggingClassifier
+from sklearn.svm import SVC
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+import numpy as np
+import pandas as pd
+
+# Load or define your dataset here
+# X, y = load_your_data()  # Replace with your data loading code
+print("Please ensure X and y are defined before running this code")
+
+# Split the dataset
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.3, random_state=42
+)
+
+# Bagging with SVC
+print("\\n=== Training Bagging with SVM ===")
+bag_model1 = BaggingClassifier(
+    estimator=SVC(), 
+    n_estimators=100, 
+    oob_score=True, 
+    random_state=42
+)
+bag_model1.fit(X_train, y_train)
+svm_score = bag_model1.oob_score_
+print(f"Out-of-Bag Score (SVM): {svm_score:.4f}")
+
+# Bagging with Decision Tree
+print("\\n=== Training Bagging with Decision Tree ===")
+bag_model2 = BaggingClassifier(
+    estimator=DecisionTreeClassifier(),
+    n_estimators=100,
+    oob_score=True,
+    random_state=42
+)
+bag_model2.fit(X_train, y_train)
+tree_score = bag_model2.oob_score_
+print(f"Out-of-Bag Score (Decision Tree): {tree_score:.4f}")
+
+# Evaluate on test set
+print("\\n=== Test Set Evaluation ===")
+for name, model in [('SVM', bag_model1), ('Decision Tree', bag_model2)]:
+    y_pred = model.predict(X_test)
+    acc = accuracy_score(y_test, y_pred)
+    print(f"{name} Test Accuracy: {acc:.4f}")
+"""
+    return code
