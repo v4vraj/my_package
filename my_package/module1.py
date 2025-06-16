@@ -1,6 +1,10 @@
 def hyperparameter():
     """
-    Returns the complete hyperparameter tuning code as a string.
+    Returns the complete KNN hyperparameter tuning code as a string.
+    Usage:
+    code = hyperparameter()
+    print(code)  # To view the code
+    exec(code)   # To execute the code
     """
     code = """
 # Dataset: Breast Cancer
@@ -62,5 +66,64 @@ y_pred = best_knn.predict(X_test)
 # Step 11: Print classification metrics
 print("\\nClassification Report:")
 print(classification_report(y_test, y_pred))
+"""
+    return code
+
+
+def aprior():
+    """
+    Returns Apriori association rule mining code as a string.
+    Includes data loading options from multiple sources.
+    Usage:
+    code = aprior()
+    print(code)  # To view the code
+    exec(code)   # To execute the code
+    """
+    code = """
+# Apriori Algorithm Implementation
+
+# First install the package (remove ! if not in notebook)
+!pip install apyori
+
+from google.colab import files
+import pandas as pd
+from apyori import apriori
+
+# Data loading options
+def load_data(source='github'):
+    if source == 'upload':
+        uploaded = files.upload()
+        return pd.read_csv(next(iter(uploaded.keys())))
+    elif source == 'drive':
+        from google.colab import drive
+        drive.mount('/content/drive')
+        return pd.read_csv('/content/drive/MyDrive/path_to_your_file.csv')
+    elif source == 'github':
+        url = "https://raw.githubusercontent.com/YBI-Foundation/Dataset/refs/heads/main/Online%20Purchase.csv"
+        return pd.read_csv(url)
+    else:
+        return pd.read_csv('purchase_data.csv', header=None)
+
+# Load data
+df = load_data('github')  # Change source as needed
+print(df.to_string())
+
+# Prepare records for Apriori
+records = []
+for i in range(0, len(df)):
+    records.append([str(df.values[i, j]) for j in range(0, len(df.columns)) 
+                   if pd.notna(df.values[i, j])])
+
+# Generate association rules
+association_rules = apriori(records, min_support=0.5, min_confidence=0.75)
+association_results = list(association_rules)
+
+# Print results
+print("\\nAssociation Rules:")
+for item in association_results:
+    print("\\nRule:", item[0])
+    print("Support:", item[1])
+    print("Confidence:", item[2][0][2])
+    print("Lift:", item[2][0][3])
 """
     return code
